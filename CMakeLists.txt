@@ -1,0 +1,56 @@
+cmake_minimum_required(VERSION 3.14)
+project(simple_database)
+
+set(CMAKE_CXX_STANDARD 17)
+
+link_directories($ENV{ROCKSDB_PATH})
+
+MESSAGE( $ENV{ROCKSDB_PATH})
+INCLUDE_DIRECTORIES($ENV{ROCKSDB_PATH}/db)
+INCLUDE_DIRECTORIES($ENV{ROCKSDB_PATH}/include)
+
+list(APPEND THIRDPARTY_LIBS librocksdb.a)
+set(SOURCE_NOMAIN
+        src/status.h
+        src/metacommand.h
+        src/metacommand.cpp
+        src/sqlhandler.h
+        src/statement.cpp
+        src/statement.h
+        src/status.cpp
+        src/storage/storage.cpp
+        src/storage/storage.h
+        src/storage/storage_rocksdb.cpp
+        src/storage/storage_rocksdb.h
+        )
+list(APPEND SOURCE src/main.cpp)
+add_executable(simple_database ${SOURCE} )
+
+list(APPEND LIBS ${THIRDPARTY_LIBS})
+target_link_libraries(simple_database ${LIBS})
+
+set(TESTS
+        src/storage/rocksdb_test.cpp
+        src/storage/storage_rocksdb_test.cpp
+        )
+
+set(TEST_EXES ${TESTS})
+
+foreach(sourcefile ${TEST_EXES})
+    get_filename_component(exename ${sourcefile} NAME_WE)
+    add_executable(${exename} ${sourcefile} ${SOURCE_NOMAIN})
+    #set_target_properties(${CMAKE_PROJECT_NAME}_${exename}${ARTIFACT_SUFFIX}
+    #        PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD_RELEASE 1
+    #        EXCLUDE_FROM_DEFAULT_BUILD_MINRELEASE 1
+    #        EXCLUDE_FROM_DEFAULT_BUILD_RELWITHDEBINFO 1
+    #        OUTPUT_NAME ${exename}${ARTIFACT_SUFFIX}
+    #        )
+    target_link_libraries(${exename} ${LIBS})
+endforeach(sourcefile ${TEST_EXES})
+#add_executable(rocksdb_test)
+
+#动态库
+#target_link_libraries(rocksdb_test ${LIBS})
+#target_link_libraries(simple_database -lrocksdb)
+
+
