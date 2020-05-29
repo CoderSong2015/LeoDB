@@ -3,6 +3,8 @@ project(simple_database)
 
 set(CMAKE_CXX_STANDARD 17)
 
+add_subdirectory(src/parser)
+
 link_directories($ENV{ROCKSDB_PATH})
 
 MESSAGE( $ENV{ROCKSDB_PATH})
@@ -23,11 +25,14 @@ set(SOURCE_NOMAIN
         src/storage/storage_rocksdb.cpp
         src/storage/storage_rocksdb.h
         )
-list(APPEND SOURCE src/main.cpp)
+list(APPEND SOURCE src/main.cpp ${SOURCE_NOMAIN})
 add_executable(simple_database ${SOURCE} )
+#ADD_DEPENDENCIES(simple_database GenParserSource)
 
 list(APPEND LIBS ${THIRDPARTY_LIBS})
-target_link_libraries(simple_database ${LIBS})
+
+#可执行文件要包括子目录的
+target_link_libraries(simple_database ${LIBS} )
 
 set(TESTS
         src/storage/rocksdb_test.cpp
@@ -39,18 +44,8 @@ set(TEST_EXES ${TESTS})
 foreach(sourcefile ${TEST_EXES})
     get_filename_component(exename ${sourcefile} NAME_WE)
     add_executable(${exename} ${sourcefile} ${SOURCE_NOMAIN})
-    #set_target_properties(${CMAKE_PROJECT_NAME}_${exename}${ARTIFACT_SUFFIX}
-    #        PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD_RELEASE 1
-    #        EXCLUDE_FROM_DEFAULT_BUILD_MINRELEASE 1
-    #        EXCLUDE_FROM_DEFAULT_BUILD_RELWITHDEBINFO 1
-    #        OUTPUT_NAME ${exename}${ARTIFACT_SUFFIX}
-    #        )
     target_link_libraries(${exename} ${LIBS})
 endforeach(sourcefile ${TEST_EXES})
-#add_executable(rocksdb_test)
 
-#动态库
-#target_link_libraries(rocksdb_test ${LIBS})
-#target_link_libraries(simple_database -lrocksdb)
 
 
