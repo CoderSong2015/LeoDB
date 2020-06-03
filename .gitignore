@@ -1,2 +1,5 @@
 cmake-build-debug
 .idea/
+gram.h
+gram.cpp
+tokenizer.cpp
