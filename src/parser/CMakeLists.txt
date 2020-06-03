@@ -1,25 +1,23 @@
 project(parser)
 
-
-
-
 #include_directories(. ${CMAKE_CURRENT_BINARY_DIR} )
 
-message(${CMAKE_CURRENT_BINARY_DIR})
-find_package(BISON)
-find_package(FLEX)
+message(${CMAKE_CURRENT_LIST_DIR})
+find_package(BISON REQUIRED)
+find_package(FLEX REQUIRED)
 
 
 #后面的是生成的.h .cpp类似于 lex.yy.c y.tab.c y.tab.h
-BISON_TARGET(MyParser parser/gram.y ${CMAKE_CURRENT_BINARY_DIR}/gram.cpp)
-#FLEX_TARGET(MyScanner lexer.l  ${CMAKE_CURRENT_BINARY_DIR}/lexer.cpp)
-FLEX_TARGET(MyScanner tokenizer.l ${CMAKE_CURRENT_BINARY_DIR}/tokenizer.cpp)
-
+BISON_TARGET(MyParser ${CMAKE_CURRENT_LIST_DIR}/gram.y ${CMAKE_CURRENT_BINARY_DIR}/gram.c DEFINES_FILE ${CMAKE_CURRENT_BINARY_DIR}/gram.h)
+FLEX_TARGET(MyScanner tokenizer.l ${CMAKE_CURRENT_BINARY_DIR}/tokenizer.c)
+message(${BISON_MyParser_INPUT})
+message(${FLEX_MyScanner_INPUT})
 ADD_FLEX_BISON_DEPENDENCY(MyScanner MyParser)
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 
 add_library(${PROJECT_NAME}
+        parser.cpp
         ${BISON_MyParser_OUTPUTS}
         ${FLEX_MyScanner_OUTPUTS})
 

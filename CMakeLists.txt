@@ -10,6 +10,7 @@ link_directories($ENV{ROCKSDB_PATH})
 MESSAGE( $ENV{ROCKSDB_PATH})
 INCLUDE_DIRECTORIES($ENV{ROCKSDB_PATH}/db)
 INCLUDE_DIRECTORIES($ENV{ROCKSDB_PATH}/include)
+INCLUDE_DIRECTORIES(parser)
 
 list(APPEND THIRDPARTY_LIBS librocksdb.a)
 set(SOURCE_NOMAIN
@@ -26,8 +27,8 @@ set(SOURCE_NOMAIN
         src/storage/storage_rocksdb.h
         )
 list(APPEND SOURCE src/main.cpp ${SOURCE_NOMAIN})
-add_executable(simple_database ${SOURCE} )
-#ADD_DEPENDENCIES(simple_database GenParserSource)
+add_executable(simple_database ${SOURCE} ${FLEX_LIBRARIES})
+ADD_DEPENDENCIES(simple_database parser)
 
 list(APPEND LIBS ${THIRDPARTY_LIBS})
 

@@ -4,11 +4,14 @@
 
 #ifndef SIMPLE_DATABASE_PARSER_H
 #define SIMPLE_DATABASE_PARSER_H
-
+#include <iostream>
 namespace simpledb{
 
-class parser {
+//#include "gram.h"
+class Parser {
 
+ public:
+    static void parserString(std::string s);
 };
 
 }//namespace simpledb

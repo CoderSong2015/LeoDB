@@ -7,7 +7,7 @@
 
 #include <iostream>
 #include "statement.h"
-
+#include "parser/parser.h"
 using std::string;
 using std::cout;
 using std::endl;
@@ -22,6 +22,8 @@ namespace simpledb{
         }else{
             cout << ss.toString() << endl;
         }
+
+        Parser::parserString(command);
     }
 }
 #endif //SIMPLE_DATABASE_SQLHANDLER_H

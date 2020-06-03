@@ -3,3 +3,8 @@
 //
 
 #include "parser.h"
+
+
+void simpledb::Parser::parserString(std::string s) {
+
+}
