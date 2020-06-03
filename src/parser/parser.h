@@ -5,13 +5,16 @@
 #ifndef SIMPLE_DATABASE_PARSER_H
 #define SIMPLE_DATABASE_PARSER_H
 #include <iostream>
+#include "gram.h"
+extern int yyparse();
+extern struct yy_buffer_state * yy_scan_string(const char * yystr);
+
 namespace simpledb{
 
-//#include "gram.h"
-class Parser {
 
+class Parser {
  public:
-    static void parserString(std::string s);
+    static void parserString(const std::string& s);
 };
 
 }//namespace simpledb

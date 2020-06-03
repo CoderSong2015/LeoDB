@@ -5,15 +5,9 @@
 #include <string.h>
 #include "gram.h"
 
-void yyerror(char* s)
-{
-    fprintf(stderr, "%s\n", s);
-}
-//main()
-//{
-//    yyparse();
-//}
 %}
+
+%option noyywrap
 
 space			[ \t\n\r\f]
 integer			{digit}+
@@ -29,5 +23,8 @@ insert {
     yylval = strdup(yytext); return TOKEN_INSERT;
 }
 
+into {
+    yylval = strdup(yytext); return TOKEN_INTO;
+}
 
 %%

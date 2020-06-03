@@ -2,15 +2,18 @@ cmake_minimum_required(VERSION 3.14)
 project(simple_database)
 
 set(CMAKE_CXX_STANDARD 17)
+#set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -v -W -Wregister -Wunused-parameter")
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}  -W -Wregister -Wunused-parameter")
 
 add_subdirectory(src/parser)
 
 link_directories($ENV{ROCKSDB_PATH})
 
-MESSAGE( $ENV{ROCKSDB_PATH})
+#MESSAGE( $ENV{ROCKSDB_PATH})
 INCLUDE_DIRECTORIES($ENV{ROCKSDB_PATH}/db)
 INCLUDE_DIRECTORIES($ENV{ROCKSDB_PATH}/include)
 INCLUDE_DIRECTORIES(parser)
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 list(APPEND THIRDPARTY_LIBS librocksdb.a)
 set(SOURCE_NOMAIN
@@ -25,6 +28,11 @@ set(SOURCE_NOMAIN
         src/storage/storage.h
         src/storage/storage_rocksdb.cpp
         src/storage/storage_rocksdb.h
+        src/parser/parser.h
+        src/parser/parser.cpp
+        src/parser/gram.cpp
+        src/parser/gram.h
+        src/parser/tokenizer.cpp
         )
 list(APPEND SOURCE src/main.cpp ${SOURCE_NOMAIN})
 add_executable(simple_database ${SOURCE} ${FLEX_LIBRARIES})
