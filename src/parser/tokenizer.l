@@ -1,14 +1,16 @@
 
 %{
-#define YYSTYPE char *
+
 #include <stdio.h>
 #include <string.h>
+#include <string>
+
 #include "gram.h"
 
 %}
 
 %option noyywrap
-
+digit           [0-9]
 space			[ \t\n\r\f]
 integer			{digit}+
 
@@ -20,11 +22,24 @@ identifier		{ident_start}{ident_cont}*
 %%
 
 insert {
-    yylval = strdup(yytext); return TOKEN_INSERT;
+    return TOKEN_INSERT;
 }
 
 into {
-    yylval = strdup(yytext); return TOKEN_INTO;
+    return TOKEN_INTO;
+}
+
+values {
+    return TOKEN_VALUE;
+}
+
+{integer} {
+    yylval.ival = atol(yytext + 1);
+    return TOKEN_INTEGER;
+}
+
+{identifier} {
+    yylval.sval = new std::string (yytext); return IDENTIFIER;
 }
 
 %%
