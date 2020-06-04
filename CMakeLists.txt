@@ -13,7 +13,7 @@ link_directories($ENV{ROCKSDB_PATH})
 INCLUDE_DIRECTORIES($ENV{ROCKSDB_PATH}/db)
 INCLUDE_DIRECTORIES($ENV{ROCKSDB_PATH}/include)
 INCLUDE_DIRECTORIES(parser)
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
+#include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 list(APPEND THIRDPARTY_LIBS librocksdb.a)
 set(SOURCE_NOMAIN
@@ -33,6 +33,7 @@ set(SOURCE_NOMAIN
         src/parser/gram.cpp
         src/parser/gram.h
         src/parser/tokenizer.cpp
+
         )
 list(APPEND SOURCE src/main.cpp ${SOURCE_NOMAIN})
 add_executable(simple_database ${SOURCE} ${FLEX_LIBRARIES})

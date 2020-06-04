@@ -16,16 +16,18 @@ FLEX_TARGET(MyScanner tokenizer.l ${CMAKE_CURRENT_LIST_DIR}/tokenizer.cpp)
 message(${BISON_MyParser_INPUT})
 message(${FLEX_MyScanner_INPUT})
 ADD_FLEX_BISON_DEPENDENCY(MyScanner MyParser)
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
-
+#include_directories(${CMAKE_CURRENT_BINARY_DIR})
+include_directories(parser)
 
 add_library(${PROJECT_NAME}
         parser.cpp
+        nodes.cpp
         ${BISON_MyParser_OUTPUTS}
         ${FLEX_MyScanner_OUTPUTS})
 
 target_include_directories(${PROJECT_NAME} PUBLIC
         parser.h
+        nodes.h
         )
 
 message(${FLEX_MyScanner_OUTPUTS})
