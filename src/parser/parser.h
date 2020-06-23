@@ -5,7 +5,9 @@
 #ifndef SIMPLE_DATABASE_PARSER_H
 #define SIMPLE_DATABASE_PARSER_H
 #include <iostream>
-#include "gram.h"
+
+//#include "gram.h"
+
 extern int yyparse();
 extern struct yy_buffer_state * yy_scan_string(const char * yystr);
 
