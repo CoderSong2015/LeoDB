@@ -24,7 +24,7 @@ void yyerror (char const *s) {
 %token <sval> IDENTIFIER
 %token <ival> NUMBER TOKEN_INTEGER
 
-%type <node>   ColId a_expr exprConst
+%type <node>   ColId a_expr exprConst InsertStmt
 %type <vec> expr_list
 
 %type  <node> insert_target
@@ -38,6 +38,8 @@ stmt:
 InsertStmt:
     TOKEN_INSERT TOKEN_INTO insert_target value_clause
     {
+        Node* rv = simpledb::makeRangeVarNode($3);
+        $$ = simpledb::makeInsertStmt((Node *)rv, NULL, NULL);
         printf("\tHeat turned on or off");
     }
 ;

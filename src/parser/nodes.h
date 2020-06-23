@@ -16,6 +16,8 @@ typedef enum NodeTag {
     T_Invalid = 0,
     T_String,
     T_Int,
+    T_InsertStmt,
+    T_RangeVar,
 
 }NodeTag;
 
@@ -33,6 +35,20 @@ typedef struct Node{
     NodeTag		type;
 }Node;
 
+typedef struct StringNode:Node{
+    NodeTag type;
+    string val;
+    int location;  /* token location, or -1 if unknown */
+}StringNode;
+
+inline Node * makeStringNode(const string& s, int location){
+    StringNode *n = new StringNode();
+    n->type = T_String;
+    n->val = s;
+    n->location = location;
+    return n;
+}
+
 typedef struct RangeVar :Node
 {
     NodeTag		type;
@@ -46,7 +62,12 @@ typedef struct RangeVar :Node
     int			location;		/* token location, or -1 if unknown */
 } RangeVar;
 
-
+inline Node * makeRangeVarNode(Node* catalogname){
+    RangeVar *n = new RangeVar();
+    n->type = T_RangeVar;
+    n->catalogname = ((StringNode *)catalogname)->val;
+    return n;
+}
 
 /* ----------------------
  *		Insert Statement
@@ -56,15 +77,22 @@ typedef struct RangeVar :Node
  * is INSERT ... DEFAULT VALUES.
  * ----------------------
  */
-typedef struct InsertStmt:Node
-{
+typedef struct InsertStmt:Node{
     NodeTag		       type;
     RangeVar           *relation;		/* relation to insert into */
     vector<string>	   *cols;			/* optional: names of the target columns */
     Node	   *selectStmt;		/* the source SELECT/VALUES, or NULL */
 
-
 } InsertStmt;
+
+inline Node * makeInsertStmt(Node* s, vector<string> *cols, Node *selectStmt){
+    InsertStmt *n = new InsertStmt();
+    n->type = T_InsertStmt;
+    n->relation = (RangeVar *)s;
+    n->cols = cols;
+    n->selectStmt = selectStmt;
+    return n;
+}
 
 typedef struct NumNode:Node{
     NodeTag type;
@@ -80,19 +108,7 @@ inline Node * makeNumNode(int64_t num, int location){
     return n;
 }
 
-typedef struct StringNode:Node{
-    NodeTag type;
-    string val;
-    int location;  /* token location, or -1 if unknown */
-}StringNode;
 
-inline Node * makeStringNode(const string& s, int location){
-    StringNode *n = new StringNode();
-    n->type = T_String;
-    n->val = s;
-    n->location = location;
-    return n;
-}
 /* location type
 typedef struct YYLTYPE
 {
