@@ -72,7 +72,7 @@ typedef struct NumNode:Node{
     int location;  /* token location, or -1 if unknown */
 }NumNode;
 
-Node * makeNumNode(int64_t num, int location){
+inline Node * makeNumNode(int64_t num, int location){
     NumNode *n = new NumNode();
     n->type = T_Int;
     n->val.ival = num;
@@ -86,7 +86,7 @@ typedef struct StringNode:Node{
     int location;  /* token location, or -1 if unknown */
 }StringNode;
 
-Node * makeStringNode(const string& s, int location){
+inline Node * makeStringNode(const string& s, int location){
     StringNode *n = new StringNode();
     n->type = T_String;
     n->val = s;

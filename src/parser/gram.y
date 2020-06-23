@@ -1,9 +1,10 @@
 
 %{
-
-#include <iostream>
 #include "nodes.h"
+#include <iostream>
+
 using simpledb::Node;
+using simpledb::StringNode;
 int yylex();
 
 
@@ -12,10 +13,10 @@ void yyerror (char const *s) {
 }
 
 %}
+
 %union{
        int                   ival;
        std::string           *sval;
-
        Node                  *node;
        std::vector<Node *>   *vec;
 }
@@ -43,13 +44,13 @@ InsertStmt:
 insert_target:
     ColId
         {
-        printf("\t 1111 ");
+        printf("%s", ((StringNode *)$1)->val.c_str());
         $$ = $1;
         }
 ;
 
 value_clause:
-     TOKEN_VALUE '(' expr_list ')'
+     TOKEN_VALUE  expr_list
          {
              printf("go here\n");
          }
