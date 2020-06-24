@@ -1,10 +1,7 @@
 
-%{
-#include "nodes.h"
+%code top{
 #include <iostream>
 
-using simpledb::Node;
-using simpledb::StringNode;
 int yylex();
 
 
@@ -12,8 +9,12 @@ void yyerror (char const *s) {
    fprintf (stderr, "%s\n", s);
 }
 
-%}
-
+}
+%code requires {
+  #include "nodes.h"
+  using simpledb::Node;
+  using simpledb::StringNode;
+}
 %union{
        int                   ival;
        std::string           *sval;
@@ -69,21 +70,21 @@ expr_list:
      | expr_list ',' a_expr
            {
                $1->push_back($3);
-     	       $$ = $1
+     	       $$ = $1;
      	   }
 ;
 
 a_expr:
-     ColId            { $$ = $1 }  /*ColId是字符串，将其制作为string node*/
-     | exprConst      { $$ = $1 }  /*处理数字*/
+     ColId            { $$ = $1; }  /*ColId是字符串，将其制作为string node*/
+     | exprConst      { $$ = $1; }  /*处理数字*/
 ;
 
 /* 根据token返回不同的node*/
 exprConst:
-     TOKEN_INTEGER  { $$ = simpledb::makeNumNode($1, @1.first_column) }
+     TOKEN_INTEGER  { $$ = simpledb::makeNumNode($1, @1.first_column); }
      /*| TOKEN_DOUBLE {}*/
 
 ColId:
-     IDENTIFIER     { $$ = simpledb::makeStringNode(*$1, @1.first_column)  }
+     IDENTIFIER     { $$ = simpledb::makeStringNode(*$1, @1.first_column);  }
 ;
 %%

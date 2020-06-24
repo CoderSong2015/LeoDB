@@ -2,10 +2,34 @@ project(parser)
 
 #include_directories(. ${CMAKE_CURRENT_BINARY_DIR} )
 
+#OnmacOS,searchHomebrewforkeg-onlyversionsofBisonandFlex.Xcodedoes
+#notprovidenewenoughversionsforustouse.
+if(CMAKE_HOST_SYSTEM_NAMEMATCHES"Darwin")
+    execute_process(
+            COMMANDbrew--prefixbison
+            RESULT_VARIABLEBREW_BISON
+            OUTPUT_VARIABLEBREW_BISON_PREFIX
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+    if(BREW_BISONEQUAL0ANDEXISTS"${BREW_BISON_PREFIX}")
+        message(STATUS"FoundBisonkeginstalledbyHomebrewat${BREW_BISON_PREFIX}")
+        set(BISON_EXECUTABLE"${BREW_BISON_PREFIX}/bin/bison")
+    endif()
 
+    execute_process(
+            COMMANDbrew--prefixflex
+            RESULT_VARIABLEBREW_FLEX
+            OUTPUT_VARIABLEBREW_FLEX_PREFIX
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+    if(BREW_FLEXEQUAL0ANDEXISTS"${BREW_FLEX_PREFIX}")
+        message(STATUS"FoundFlexkeginstalledbyHomebrewat${BREW_FLEX_PREFIX}")
+        set(FLEX_EXECUTABLE"${BREW_FLEX_PREFIX}/bin/flex")
+    endif()
+endif()
 
-message(${CMAKE_CURRENT_LIST_DIR})
-find_package(BISON REQUIRED)
+message("CURRENT LIST: " ${CMAKE_CURRENT_LIST_DIR})
+find_package(BISON 3.6.4 REQUIRED)
 find_package(FLEX REQUIRED)
 
 
