@@ -28,5 +28,7 @@ class StorageRocksdb: public Storage {
     rocksdb::Options* options_;
 };
 
+//Init in main.cpp
+static StorageRocksdb * strdb;
 
 #endif //SIMPLE_DATABASE_STORAGE_ROCKSDB_H

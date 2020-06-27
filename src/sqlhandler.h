@@ -16,12 +16,12 @@ namespace simpledb{
 
     void handlesql(const string & command){
         Statement *st = new Statement(command);
-        Status ss = st->GetCommandType();
-        if (ss.ok()){
-            cout << "get commandType ok" << endl;
-        }else{
-            cout << ss.toString() << endl;
-        }
+//        Status ss = st->GetCommandType();
+//        if (ss.ok()){
+//            cout << "get commandType ok" << endl;
+//        }else{
+//            cout << ss.toString() << endl;
+//        }
 
         Parser::parserString(command);
     }

@@ -6,6 +6,7 @@
 
 namespace simpledb{
     void Parser::parserString(const std::string& s) {
+
         yy_scan_string(s.c_str());
         yyparse();
 }

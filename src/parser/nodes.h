@@ -18,6 +18,8 @@ typedef enum NodeTag {
     T_Int,
     T_InsertStmt,
     T_RangeVar,
+    T_CreateStmt,
+    T_ColDef,
 
 }NodeTag;
 
@@ -108,7 +110,35 @@ inline Node * makeNumNode(int64_t num, int location){
     return n;
 }
 
+typedef struct CreateStmt:Node{
+    NodeTag		       type;
+    string             tablename;		/* relation to insert into */
+    vector<Node *>	   *cols;			/* optional: names of the target columns */
 
+} CreateStmt;
+
+inline Node * makeCreateStmt(const string& name, vector<Node *> *cols){
+    CreateStmt *n = new CreateStmt();
+    n->type = T_CreateStmt;
+    n->tablename = name;
+    n->cols = cols;
+    return n;
+}
+
+typedef struct ColumnDefNode:Node{
+    NodeTag		       type;
+    string             col_name;		/* relation to insert into */
+    string	           type_name;			/* optional: names of the target columns */
+
+} ColumnDefNode;
+
+inline Node * makeColumnDefNode(const string& col_name, const string& col_type){
+    ColumnDefNode *n = new ColumnDefNode();
+    n->type = T_ColDef;
+    n->col_name = col_name;
+    n->type_name = col_type;
+    return n;
+}
 /* location type
 typedef struct YYLTYPE
 {

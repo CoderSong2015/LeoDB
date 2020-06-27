@@ -8,7 +8,7 @@ set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}  -W -Wregister -Wunused-parameter")
 add_subdirectory(src/parser)
 
 link_directories($ENV{ROCKSDB_PATH})
-
+message("rocksdb path: " $ENV{ROCKSDB_PATH})
 #MESSAGE( $ENV{ROCKSDB_PATH})
 INCLUDE_DIRECTORIES($ENV{ROCKSDB_PATH}/db)
 INCLUDE_DIRECTORIES($ENV{ROCKSDB_PATH}/include)
