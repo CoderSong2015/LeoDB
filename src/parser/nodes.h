@@ -87,6 +87,11 @@ typedef struct RangeVar :Node
     int			location;		/* token location, or -1 if unknown */
 } RangeVar;
 
+typedef struct FakeStmt:Node{
+    NodeTag		       type;
+
+} FakeStmt;
+
 inline Node * makeRangeVarNode(Node* catalogname){
     RangeVar *n = new RangeVar();
     n->type = T_RangeVar;

@@ -11,6 +11,7 @@
 
 typedef struct pass_to_bison {
     yyscan_t scanner;
+    Node *   stmt;
 } x;
 
 #define YY_EXTRA_TYPE x*

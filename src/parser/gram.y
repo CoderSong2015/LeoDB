@@ -2,14 +2,14 @@
 %code top{
 #include <iostream>
 
-
 }
 
 
 %code requires {
   #include "nodes.h"
-  extern int yylex(YYSTYPE * lvalp, YYLTYPE * , yyscan_t scanner);
-
+  #include "parser.h"
+  extern int yylex(YYSTYPE * lvalp, YYLTYPE * yylloc, yyscan_t scanner);
+  extern YY_EXTRA_TYPE yyget_extra  (yyscan_t yyscanner);
 }
 %define api.pure full
 %parse-param {yyscan_t yyscanner}
@@ -33,12 +33,20 @@ void yyerror(YYLTYPE* yylloc, yyscan_t x,char const *msg){
 %token <sval> IDENTIFIER
 %token <ival> NUMBER TOKEN_INTEGER
 
-%type <node>   ColId a_expr exprConst InsertStmt CreateStmt Column_Def
+%type <node>   ColId a_expr exprConst InsertStmt CreateStmt Column_Def stmt
 %type <vec> expr_list TableElementList
 
 %type  <node> insert_target
 %type <sval> col_name type_name table_name
 %%
+
+
+stmtblock:	stmt
+			{
+				yyget_extra(yyscanner)->stmt = $1;
+				printf("stmt type: %d\n", ((Node *)$1)->type);
+			}
+;
 
 stmt:
     InsertStmt
