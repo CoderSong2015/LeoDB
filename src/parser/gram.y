@@ -25,7 +25,9 @@
 
 %{
 
-void yyerror(YYLTYPE* yylloc, yyscan_t x,char const *msg){}
+void yyerror(YYLTYPE* yylloc, yyscan_t x,char const *msg){
+    std::cout << msg << std::endl;
+}
 %}
 %token  TOKEN_WORD TOKEN_TABLE TOKEN_INSERT TOKEN_STRING TOKEN_INTO TOKEN_VALUE TOKEN_DOUBLE TOKEN_CREATE
 %token <sval> IDENTIFIER

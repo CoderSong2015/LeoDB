@@ -18,7 +18,8 @@ namespace simpledb{
         std::cout <<"go here 2:" << c<< std::endl;
         yyset_extra(&x, x.scanner);
         yy_scan_string(s.c_str(), x.scanner);
-        yyparse ( x.scanner);
+        int d = yyparse ( x.scanner);
+        std::cout <<"go here 2.5:" << d << std::endl;
         yylex_destroy (x.scanner);
         std::cout <<"go here 3" << std::endl;
 }
