@@ -2,25 +2,31 @@
 %code top{
 #include <iostream>
 
-int yylex();
-
-
-void yyerror (char const *s) {
-   fprintf (stderr, "%s\n", s);
-}
 
 }
+
+
 %code requires {
   #include "nodes.h"
-  using simpledb::Node;
-  using simpledb::StringNode;
+  extern int yylex(YYSTYPE * lvalp, YYLTYPE * , yyscan_t scanner);
+
 }
+%define api.pure full
+%parse-param {yyscan_t yyscanner}
+%lex-param   {yyscan_t yyscanner}
+%locations
 %union{
+       core_YYSTYPE          core_yystype;
        int                   ival;
        std::string           *sval;
        Node                  *node;
        std::vector<Node *>   *vec;
 }
+
+%{
+
+void yyerror(YYLTYPE* yylloc, yyscan_t x,char const *msg){}
+%}
 %token  TOKEN_WORD TOKEN_TABLE TOKEN_INSERT TOKEN_STRING TOKEN_INTO TOKEN_VALUE TOKEN_DOUBLE TOKEN_CREATE
 %token <sval> IDENTIFIER
 %token <ival> NUMBER TOKEN_INTEGER
@@ -41,8 +47,8 @@ stmt:
 InsertStmt:
     TOKEN_INSERT TOKEN_INTO insert_target value_clause
     {
-        Node* rv = simpledb::makeRangeVarNode($3);
-        $$ = simpledb::makeInsertStmt((Node *)rv, NULL, NULL);
+        Node* rv = makeRangeVarNode($3);
+        $$ = makeInsertStmt((Node *)rv, NULL, NULL);
         printf("\tHeat turned on or off");
     }
 ;
@@ -64,10 +70,10 @@ value_clause:
 CreateStmt:
     TOKEN_CREATE TOKEN_TABLE table_name '(' TableElementList ')'
     {
-        $$ = simpledb::makeCreateStmt(*$3, $5);
+        $$ = makeCreateStmt(*$3, $5);
         printf("table name: %s\n", $3->c_str());
         for(auto ct:(*$5)){
-            printf("column name: %s\n", ((simpledb::ColumnDefNode *)ct)->col_name.c_str());
+            printf("column name: %s\n", ((ColumnDefNode *)ct)->col_name.c_str());
         }
     }
 ;
@@ -75,7 +81,7 @@ CreateStmt:
 TableElementList:
     Column_Def
      {
-          printf("column name2: %s\n", ((simpledb::ColumnDefNode *)$1)->col_name.c_str());
+          printf("column name2: %s\n", ((ColumnDefNode *)$1)->col_name.c_str());
           vector<Node *> *v = new vector<Node *>;
           v->push_back($1);
           $$ = v;
@@ -95,7 +101,7 @@ TableElementList:
 Column_Def:
     col_name type_name
     {
-        $$ = simpledb::makeColumnDefNode(*($1), *($2));
+        $$ = makeColumnDefNode(*($1), *($2));
     }
 ;
 
@@ -140,10 +146,10 @@ a_expr:
 
 /* 根据token返回不同的node*/
 exprConst:
-     TOKEN_INTEGER  { $$ = simpledb::makeNumNode($1, @1.first_column); }
+     TOKEN_INTEGER  { $$ = makeNumNode($1, @1.first_column); }
      /*| TOKEN_DOUBLE {}*/
 
 ColId:
-     IDENTIFIER     { $$ = simpledb::makeStringNode(*$1, @1.first_column);  }
+     IDENTIFIER     { $$ = makeStringNode(*$1, @1.first_column);  }
 ;
 %%

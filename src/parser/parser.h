@@ -7,13 +7,21 @@
 #include <iostream>
 
 //#include "gram.h"
+#include "nodes.h"
 
-extern int yyparse();
-extern struct yy_buffer_state * yy_scan_string(const char * yystr);
-//extern int yylex_init(void*);
+typedef struct pass_to_bison {
+    yyscan_t scanner;
+} x;
+
+#define YY_EXTRA_TYPE x*
+extern int yyparse(yyscan_t scanner);
+extern void yyset_extra(YY_EXTRA_TYPE user_defined , yyscan_t yyscanner);
+extern struct yy_buffer_state * yy_scan_string(const char * yystr, yyscan_t yyscanner );
+extern int yylex_init(yyscan_t *);
+extern int yylex_destroy(void *);
+//extern YY_BUFFER_STATE yy_scan_buffer  (char * base, yy_size_t  size , yyscan_t yyscanner);
 namespace simpledb{
 
-typedef void* yyscan_t;
 class Parser {
  public:
     static void parserString(const std::string& s);

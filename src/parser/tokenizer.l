@@ -6,10 +6,18 @@
 #include <string>
 
 #include "gram.h"
+int yylex(YYSTYPE * lvalp, YYLTYPE *, yyscan_t scanner);
+/*
+ * Set the type of YYSTYPE.
+ */
+#define YYSTYPE core_YYSTYPE
 
 %}
 
 %option noyywrap
+%option reentrant
+%option bison-bridge
+%option extra-type="struct pass_to_bison *"
 
 digit           [0-9]
 space			[ \t\n\r\f]
@@ -43,12 +51,12 @@ table {
 }
 
 {integer} {
-    yylval.ival = atol(yytext + 1);
+    yylval_param->ival = atol(yytext + 1);
     return TOKEN_INTEGER;
 }
 
 {identifier} {
-    yylval.sval = new std::string (yytext); return IDENTIFIER;
+    yylval_param->sval = new std::string (yytext); return IDENTIFIER;
 }
 
 
