@@ -28,9 +28,10 @@ if(CMAKE_HOST_SYSTEM_NAMEMATCHES"Darwin")
     endif()
 endif()
 
+set(FLEX_EXECUTABLE "/usr/local/opt/flex/bin/flex")
 message("CURRENT LIST: " ${CMAKE_CURRENT_LIST_DIR})
 find_package(BISON 3.6.4 REQUIRED)
-find_package(FLEX REQUIRED)
+find_package(FLEX 2.6.4 REQUIRED)
 
 
 #后面的是生成的.h .cpp类似于 lex.yy.c y.tab.c y.tab.h

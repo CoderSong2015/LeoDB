@@ -10,7 +10,15 @@
 using std::string;
 using std::vector;
 
-namespace simpledb{
+
+// location type
+typedef struct core_YYLTYPE
+{
+    int first_line;
+    int first_column;
+    int last_line;
+    int last_column;
+}core_YYLTYPE;
 
 typedef enum NodeTag {
     T_Invalid = 0,
@@ -23,6 +31,24 @@ typedef enum NodeTag {
 
 }NodeTag;
 
+typedef struct Node{
+    NodeTag		type;
+}Node;
+
+typedef union core_YYSTYPE
+{
+    int			ival;			/* for integer literals */
+    string	   *sval;			/* for identifiers and non-integer literals */
+    const char *keyword;		/* canonical spelling of keywords */
+    Node                  *node;
+    std::vector<Node *>   *vec;
+} core_YYSTYPE;
+
+#define  YYSTYPE core_YYSTYPE
+#define YYLTYPE core_YYLTYPE
+typedef void* yyscan_t;
+
+
 typedef struct Value
 {
     NodeTag		type;			/* tag appropriately (eg. T_String) */
@@ -33,9 +59,6 @@ typedef struct Value
     };
 } Value;
 
-typedef struct Node{
-    NodeTag		type;
-}Node;
 
 typedef struct StringNode:Node{
     NodeTag type;
@@ -139,15 +162,6 @@ inline Node * makeColumnDefNode(const string& col_name, const string& col_type){
     n->type_name = col_type;
     return n;
 }
-/* location type
-typedef struct YYLTYPE
-{
-    int first_line;
-    int first_column;
-    int last_line;
-    int last_column;
-} YYLTYPE;
-*/
 
-}// namespace simpledb
+
 #endif //SIMPLE_DATABASE_NODES_H

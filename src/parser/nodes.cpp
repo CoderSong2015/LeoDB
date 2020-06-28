@@ -3,5 +3,3 @@
 //
 
 #include "nodes.h"
-
-simpledb::Node * test;
