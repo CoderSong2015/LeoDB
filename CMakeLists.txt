@@ -33,7 +33,10 @@ set(SOURCE_NOMAIN
         src/parser/gram.cpp
         src/parser/gram.h
         src/parser/tokenizer.cpp
-
+        src/catalog.cpp
+        src/catalog.h
+        src/optimize/analyzer.cpp
+        src/optimize/analyzer.h
         )
 list(APPEND SOURCE src/main.cpp ${SOURCE_NOMAIN})
 add_executable(simple_database ${SOURCE} ${FLEX_LIBRARIES})

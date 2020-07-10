@@ -3,6 +3,7 @@
 #include "metacommand.h"
 #include "sqlhandler.h"
 #include "storage/storage_rocksdb.h"
+#include "catalog.h"
 using std::cout;
 using std::cin;
 using std::endl;
@@ -37,6 +38,7 @@ void Init(){
     options.create_if_missing = true;
     string db_path = "storage_rocksdbkv_test";
     strdb = new StorageRocksdb(&options,db_path);
+    simpledb::catalog = new simpledb::Catalog(strdb);
 }
 int main() {
 

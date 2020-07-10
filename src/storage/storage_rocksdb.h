@@ -19,8 +19,8 @@ class StorageRocksdb: public Storage {
     }
 
 
-    rocksdb::Status Get(const string& k, string* value);
-    rocksdb::Status Put(const string& k, const string& value);
+    simpledb::Status Get(const string& k, string* value);
+    simpledb::Status Put(const string& k, const string& value);
     rocksdb::DB *GetDB(){ return db_; }
  private:
     string db_path_;

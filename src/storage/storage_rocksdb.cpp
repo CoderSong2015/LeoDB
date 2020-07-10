@@ -12,10 +12,18 @@ void StorageRocksdb::Init() {
     }
 }
 
-rocksdb::Status StorageRocksdb::Put(const string &k, const string &value) {
-    return db_->Put(rocksdb::WriteOptions(), k, value);
+simpledb::Status StorageRocksdb::Put(const string &k, const string &value) {
+    rocksdb::Status s =  db_->Put(rocksdb::WriteOptions(), k, value);
+    if (s.ok()){
+        return simpledb::Status();
+    }
+    return simpledb::Status::Error();
 }
 
-rocksdb::Status StorageRocksdb::Get(const string &k, string* value) {
-    return db_->Get(rocksdb::ReadOptions(), k, value);
+simpledb::Status StorageRocksdb::Get(const string &k, string* value) {
+    rocksdb::Status s =  db_->Get(rocksdb::ReadOptions(), k, value);
+    if (s.ok()){
+        return simpledb::Status();
+    }
+    return simpledb::Status::Error();
 }

@@ -8,6 +8,7 @@
 #include "rocksdb/db.h"
 #include "rocksdb/slice.h"
 #include "rocksdb/options.h"
+#include "../status.h"
 
 using std::string;
 class Storage {
@@ -16,7 +17,8 @@ class Storage {
     //Storage(){};
     virtual ~Storage() = default;
     //void Init();
-
+    virtual simpledb::Status Get(const string& k, string* value) = 0;
+    virtual simpledb::Status Put(const string& k, const string& value) = 0;
 
  //private:
 
