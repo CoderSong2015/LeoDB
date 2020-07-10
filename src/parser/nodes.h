@@ -61,7 +61,7 @@ typedef struct Value
 
 
 typedef struct StringNode:Node{
-    NodeTag type;
+    //NodeTag type;
     string val;
     int location;  /* token location, or -1 if unknown */
 }StringNode;
@@ -76,7 +76,7 @@ inline Node * makeStringNode(const string& s, int location){
 
 typedef struct RangeVar :Node
 {
-    NodeTag		type;
+    //NodeTag		type;
     string      catalogname;	/* the catalog (database) name, or NULL */
     string      schemaname;		/* the schema name, or NULL */
     string      relname;		/* the relation/sequence name */
@@ -108,7 +108,7 @@ inline Node * makeRangeVarNode(Node* catalogname){
  * ----------------------
  */
 typedef struct InsertStmt:Node{
-    NodeTag		       type;
+    //NodeTag		       type;
     RangeVar           *relation;		/* relation to insert into */
     vector<string>	   *cols;			/* optional: names of the target columns */
     Node	   *selectStmt;		/* the source SELECT/VALUES, or NULL */
@@ -125,7 +125,7 @@ inline Node * makeInsertStmt(Node* s, vector<string> *cols, Node *selectStmt){
 }
 
 typedef struct NumNode:Node{
-    NodeTag type;
+    //NodeTag type;
     Value   val;
     int location;  /* token location, or -1 if unknown */
 }NumNode;
@@ -139,7 +139,7 @@ inline Node * makeNumNode(int64_t num, int location){
 }
 
 typedef struct CreateStmt:Node{
-    NodeTag		       type;
+    //NodeTag		       type;
     string             tablename;		/* relation to insert into */
     vector<Node *>	   *cols;			/* optional: names of the target columns */
 
@@ -154,7 +154,7 @@ inline Node * makeCreateStmt(const string& name, vector<Node *> *cols){
 }
 
 typedef struct ColumnDefNode:Node{
-    NodeTag		       type;
+    //NodeTag		       type;
     string             col_name;		/* relation to insert into */
     string	           type_name;			/* optional: names of the target columns */
 
